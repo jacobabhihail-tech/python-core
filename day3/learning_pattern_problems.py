@@ -54,3 +54,5 @@ for row in range(4, 0, -1):
     for col in range(row):
         print(row, end=" ")
     print()
+
+print("\n*****END*****\n")

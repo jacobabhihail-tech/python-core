@@ -2,7 +2,7 @@
 
 #for calling candidates in loop
 for call in range(1, 6):
-    print(f"Calling candidate numer: {call}")
+    print(f"Calling candidate by number: {call}")
 
 #for checking stocks for the day
 for Stocks in range(1, 6):
@@ -37,3 +37,7 @@ for price in prices:
           profit_days += 1 #counter
 
 print(f"Print number of days:", profit_days)
+
+
+
+print("\n**********END**********\n")

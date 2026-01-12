@@ -40,6 +40,7 @@ if choice == "b":
 elif choice == "h":
 
     YAP = float(input("Please enter your avg price: "))
+    print("\n***********************************\n")
 
     if CMP >= ResPrice:
         print(f"Please sell the share of {STName}")
