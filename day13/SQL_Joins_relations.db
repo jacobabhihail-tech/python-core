@@ -1,0 +1,39 @@
+
+
+#STEP 1: Understand Relationships (Concept First)
+# creating department table.
+CREATE TABLE departments (
+	dept_id INTEGER PRIMARY KEY,
+	dept_name TEXT
+);
+
+#STEP 3: Insert Data into departments
+
+INSERT INTO departments (dept_id, dept_name)
+VALUES (1, 'AI')
+INSERT INTO departments (dept_id, dept_name)
+VALUES (2, 'HR')
+INSERT INTO departments (dept_id, dept_name)
+VALUES (3, 'Finance')
+
+#STEP 4: Modify employees table (Relationship)
+
+ALTER TABLE employees
+add COLUMN dept_id INTEGER;
+
+STEP 5: Update dept_id values
+UPDATE employees SET dept_id = 1 WHERE name = 'Rahul';
+UPDATE employees SET dept_id = 2 WHERE name = 'Anita';
+
+#What is a JOIN? (Core Concept)
+SELECT ...
+FROM table1
+JOIN table2
+ON condition;
+
+STEP 7: INNER JOIN (MOST IMPORTANT)
+
+SELECT employees.name, departments.dept_name
+FROM employees
+INNER JOIN departments
+ON employees.dept_id = departments.dept_id;
