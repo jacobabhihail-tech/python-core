@@ -16,5 +16,3 @@ Examples:
 - Customers and Orders
 
 To build meaningful datasets for AI models, data from **multiple tables must be combined using JOINs**.
-
-Typical AI data flow:
