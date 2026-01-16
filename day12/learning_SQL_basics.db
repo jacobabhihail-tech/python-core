@@ -27,3 +27,4 @@ DELETE FROM employees; # this will DELETE all the table.
 
 DELETE FROM employees
 WHERE name = 'vikram' #only delete specific data from the table.
+
