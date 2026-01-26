@@ -1,0 +1,12 @@
+<h2>Edit Expense</h2>
+
+<form method="POST">
+    {%csrf_token %}
+   
+    <input type ="text" name="name" value="{{expense.name}}" required>
+    <input type="number" name="amount" value="{expense.amount}" requried>
+    
+    <button type="submit">Update</button>
+</form>
+
+<a href="{% url 'home' %}"> back</a>
