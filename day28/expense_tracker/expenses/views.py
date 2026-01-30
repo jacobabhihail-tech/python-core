@@ -1,0 +1,140 @@
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .models import Expense
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import ExpenseSerializer
+from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter, SearchFilter
+from .models import Expense
+from .serializers import ExpenseSerializer
+from rest_framework.permissions import IsAuthenticated
+import logging
+
+
+logger = logging.getLogger(__name__)
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request,user)
+            return redirect('home')
+        else:
+            return render(request, 'expenses/login.html', {
+                'error':'Invalid username or password'
+            })
+        
+    return render(request, 'expenses/login.html')
+
+@login_required(login_url='/login/')
+def home(request):
+
+
+    if request.method == "POST":
+        name = request.POST.get("name")
+        amount = request.POST.get("amount")
+        logger.debug("Recieved POST data -> %s, %s", name, amount)
+        
+        if name.strip() and amount:
+            Expense.objects.create(name=name.strip(), amount=float(amount))
+            logger.debug("Expense created successfully")
+        return redirect("/")
+
+    expenses = Expense.objects.all()
+    logger.debug("Fetch expenses from DB -> %s", expenses)
+    return render(request, 'expenses/home.html', {"expenses": expenses})
+
+def delete_expense(request,id):
+    expense = Expense.objects.get(id=id)
+    expense.delete()
+    return redirect('home')
+
+def edit_expense(request, id):
+    expense = Expense.objects.get(id=id)
+
+    if request.method == 'POST':
+        print("POST DATA:", request.POST)
+
+        expense.name = request.POST.get('name')
+        expense.amount = request.POST.get('amount')
+        expense.save()
+        return redirect('home')
+    
+    return render(request, 'expenses/edit.html', {'expense': expense})
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+def signup_view(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password1 = request.POST.get("password1")
+        password2 = request.POST.get("password2")
+
+        if password1 != password2:
+            return render(request, 'expenses/signup.html', {
+                'error' : 'Password do not match'
+            })
+        
+        if User.objects.filter(username=username).exists():
+            return render(request, "expenses/signup.html", {
+                'error' : 'Username already exists'
+            })
+        
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password1
+        )
+
+        login(request,user)
+        return redirect('home')
+    
+    return render(request, 'expenses/signup.html')
+
+"""
+@api_view(['GET', 'POST'])
+def expense_api(request):
+    if request.method == 'GET':
+        expenses = Expense.objects.all()
+        serializer = ExpenseSerializer(expenses, many=True)
+        return Response(serializer.data)
+    
+    elif request.method == 'POST':
+         serializer = ExpenseSerializer(data=request.data)
+         if serializer.is_valid():
+             serializer.save()
+             return Response(serializer.data, status=201)
+         return Response(serializer.errors, status=400)
+"""
+
+class ExpenseListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Expense.objects.all().order_by('created_at')
+    serializer_class = ExpenseSerializer
+    permission_classes = [IsAuthenticated]
+
+    filter_bacnkedns = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+
+    # Filtering + Ordering
+
+    # filtering
+    filterset_fields = ['name', 'amount']
+
+    # search
+    search_fields = ['name']
+
+    # ordering
+    ordering_fields = ['created_at', 'amount', 'name']
+    ordering = ['-created_at']
