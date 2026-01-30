@@ -1,38 +1,33 @@
-# Expense Tracker — Day 27
+# Expense Tracker Project - 28-Day Django + DRF Journey
 
-## 📅 Day 27: Debugging & Logging
+This is a **Django + Django REST Framework (DRF)** project built over 28 days as part of a structured learning plan. The project demonstrates core backend skills including user authentication, CRUD operations, API development, pagination, filtering, debugging, logging, and deployment.
 
-### What I Learned Today
+---
 
-1. **Debug Mode (`DEBUG`)**
-   - When `DEBUG=True`, Django shows detailed error pages in the browser.
-   - Useful for development to find errors quickly.
-   - Never leave it `True` in production environments.
+## 🚀 Features
 
-2. **Debug Output**
-   - Using `print()` is simple but temporary.
-   - `logging` is structured, persistent, and configurable.
-   - Debug logs can show:
-     - Files loaded by Django
-     - API requests/responses
-     - Errors and warnings
+### User Features
+- User **signup** and **login/logout** with authentication
+- Add, edit, and delete expenses
+- View a **home page** listing all expenses
 
-3. **Logging Basics**
-   - Imported with `import logging` and configured in `settings.py`.
-   - Levels of logging:
-     - `logger.debug()` → detailed info for debugging
-     - `logger.info()` → general information, like user actions
-     - `logger.warning()` → potential issues
-     - `logger.error()` → actual errors
-     - `logger.critical()` → critical failures
+### API Features
+- REST API endpoints for CRUD operations on expenses
+- **Token-based authentication** with DRF
+- **Pagination** for API results
+- **Filtering**, **searching**, and **ordering** on API endpoints
 
-4. **Example Usage in Views**
-```python
-import logging
+### Development & Debugging
+- Environment variables managed via **python-decouple** (`.env`)
+- Debugging enabled via `DEBUG=True` in development
+- Logging configured for tracking API calls and errors
 
-logger = logging.getLogger(__name__)
+### Deployment
+- Local development server: `python manage.py runserver`
+- Optional deployment on **Render** (or Railway)
+- Production-ready using **Gunicorn** as the WSGI server
 
-def home(request):
-    logger.debug("Home page accessed")
-    logger.info(f"User {request.user} viewed the home page")
-    return render(request, 'expenses/home.html')
+---
+
+## 📁 Project Structure
+
