@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 
-ALLOWED_HOSTS = ['https://python-core-g6hu.onrender.com']
+ALLOWED_HOSTS = ['python-core-g6hu.onrender.com']
 
 
 # Application definition
