@@ -1,16 +1,21 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Expense
+from .forms import ExpenseForm
 
-def home(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        amount = request.POST.get("amount")
-        if name and amount:
-            Expense.ojects.create(name=name, amount=amount)
-        return redirect("/")
-
+def expense_list(request):
     expenses = Expense.objects.all()
-    return render(request, 'expenses/home.html', {"expenses": expenses})
 
-# Create your views here.
+    if request.method == "POST":
+        form = ExpenseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('expense_list')
+    else:
+        form = ExpenseForm()
+
+    context = {
+        'expenses' : expenses,
+        'form': form
+    }
+    return render(request, 'expenses/expense_list.html', context)

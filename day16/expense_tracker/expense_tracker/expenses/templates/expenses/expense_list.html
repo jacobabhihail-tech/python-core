@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Expense List</title>
+    
+</head>
+<body>
+    <h2>My Expenses</h2>
+
+    <ul>
+        {% for Expense in Expenses %}
+            <li>
+                {{expense.title}} - ₹{{expense.amount}} ({{ expense.date}})
+             </li>
+
+        {% empty %}
+            <li> No Expenses found. </li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
